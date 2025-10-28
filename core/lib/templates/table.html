@@ -1,0 +1,235 @@
+{% extends "base.html" %}
+{% block start %}
+
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #f0f4c3 0%, #c8e6c9 100%);
+        padding: 40px;
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #1b5e20;
+    }
+
+    .search-container {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .search-container input[type="text"] {
+        width: 60%;
+        max-width: 300px;
+        padding: 10px 15px;
+        border-radius: 8px 0 0 8px;
+        border: 1px solid #bdbdbd;
+        font-size: 1rem;
+        background: #f9fbe7;
+        box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+        transition: all 0.3s ease;
+    }
+
+    .search-container input[type="text"]:focus {
+        border-color: #43a047;
+        box-shadow: 0 0 8px rgba(76,175,80,0.3);
+        outline: none;
+        background: #ffffff;
+    }
+
+    .search-container button {
+        padding: 10px 20px;
+        border-radius: 0 8px 8px 0;
+        border: none;
+        background: linear-gradient(135deg, #43a047, #2e7d32);
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .search-container button:hover {
+        background: linear-gradient(135deg, #2e7d32, #1b5e20);
+        transform: translateY(-1px);
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        box-shadow: 0 10px 28px rgba(0,0,0,0.15);
+        border-radius: 10px;
+        overflow: hidden;
+        background: #ffffff;
+    }
+
+    th, td {
+        padding: 15px 12px;
+        text-align: left;
+        border-bottom: 1px solid #eee;
+        vertical-align: middle;
+    }
+
+    th {
+        background: linear-gradient(135deg, #43a047, #2e7d32);
+        color: white;
+        font-weight: 600;
+    }
+
+    tr:hover {
+        background: #f9fbe7;
+    }
+
+    td img {
+        width: 100px;
+        height: 120px;
+        border-radius: 6px;
+        object-fit: cover;
+        display: block;
+        margin: auto;
+        border: 1px solid #ccc;
+    }
+
+    .action-btn-container {
+        display: flex;
+        gap: 8px; /* Space between buttons */
+    }
+
+    .action-btn {
+        flex: 1; /* Make buttons share the space equally */
+        text-align: center;
+        padding: 8px 0;
+        border-radius: 6px;
+        color: white;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        font-size: 0.9rem;
+    }
+
+    .update-btn {
+        background: linear-gradient(135deg, #a5d6a7, #66bb6a);
+    }
+
+    .update-btn:hover {
+        background: linear-gradient(135deg, #66bb6a, #43a047);
+        transform: translateY(-2px);
+    }
+
+    .delete-btn {
+        background: linear-gradient(135deg, #ef5350, #c62828);
+    }
+
+    .delete-btn:hover {
+        background: linear-gradient(135deg, #c62828, #b71c1c);
+        transform: translateY(-2px);
+    }
+
+    td[colspan="5"] {
+        color: #555;
+    }
+
+    /* Home button below table */
+    .home-btn-container {
+        text-align: center;
+        margin-top: 30px;
+    }
+
+    .home-btn {
+        display: inline-block;
+        padding: 12px 30px;
+        background: linear-gradient(135deg, #43a047, #2e7d32);
+        color: white;
+        font-weight: bold;
+        text-decoration: none;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        transition: all 0.3s ease;
+        font-size: 1rem;
+    }
+
+    .home-btn:hover {
+        background: linear-gradient(135deg, #2e7d32, #1b5e20);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+    }
+
+    @media (max-width: 768px) {
+        th, td {
+            padding: 12px 8px;
+        }
+
+        td img {
+            width: 80px;
+            height: 100px;
+        }
+
+        .search-container input[type="text"] {
+            width: 70%;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .search-container input[type="text"] {
+            width: 60%;
+        }
+
+        .search-container button {
+            padding: 10px 15px;
+        }
+    }
+</style>
+
+<h2>All Books</h2>
+
+<form>
+<div class="search-container">
+    <input name="si" type="text" placeholder="Search books...">
+    <button type="submit">Search</button>
+</div>
+</form>
+
+<table>
+    <thead>
+        <tr>
+            <th>Serial No.</th>
+            <th>Book Name</th>
+            <th>Description</th>
+            <th>Image</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for book in books %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ book.b_name }}</td>
+            <td>{{ book.b_des }}</td>
+            <td>
+                {% if book.b_image %}
+                    <img src="/media/{{ book.b_image }}" alt="{{ book.b_name }}" class="book-img">
+                {% else %}
+                    No Image
+                {% endif %}
+            </td>
+            <td>
+                <div class="action-btn-container">
+                    <a href="/update/{{book.id}}/" class="action-btn update-btn">Update</a>
+                    <a href="/delete/{{book.id}}/" class="action-btn delete-btn">Delete</a>
+                </div>
+            </td>            
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5" style="text-align:center; padding: 20px;">No books available.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- Go To Home Button -->
+<div class="home-btn-container">
+    <a href="{% url 'home' %}" class="home-btn">Go To Home</a>
+</div>
+
+{% endblock %}
