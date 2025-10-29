@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% block start %}
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .login-container {
+        background: #ffffff;
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        width: 100%;
+        max-width: 400px;
+        text-align: center;
+    }
+
+    h2 {
+        color: #2e7d32;
+        margin-bottom: 25px;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    input {
+        margin-bottom: 15px;
+        padding: 12px;
+        border-radius: 8px;
+        border: 1px solid #bdbdbd;
+        font-size: 1rem;
+        background: #f9fbe7;
+        transition: all 0.3s ease;
+    }
+
+    input:focus {
+        border-color: #43a047;
+        box-shadow: 0 0 6px rgba(76,175,80,0.3);
+        outline: none;
+        background: #ffffff;
+    }
+
+    button {
+        background: linear-gradient(135deg, #43a047, #2e7d32);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 12px;
+        font-size: 1rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    button:hover {
+        background: linear-gradient(135deg, #2e7d32, #1b5e20);
+        transform: translateY(-2px);
+    }
+
+    .bottom-text {
+        margin-top: 15px;
+        font-size: 0.9rem;
+    }
+
+    .bottom-text a {
+        color: #2e7d32;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .bottom-text a:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<div class="login-container">
+    <h2>Login</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <input type="text" name="username" placeholder="Username" required>
+        <input type="password" name="password" placeholder="Password" required>
+        <button type="submit">Login</button>
+    </form>
+    <div class="bottom-text">
+        Don’t have an account? <a href="{% url 'register' %}">Register</a>
+    </div>
+</div>
+{% endblock %}
