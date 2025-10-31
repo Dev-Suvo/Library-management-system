@@ -129,31 +129,7 @@
         color: #555;
     }
 
-    /* Home button below table */
-    .home-btn-container {
-        text-align: center;
-        margin-top: 30px;
-    }
-
-    .home-btn {
-        display: inline-block;
-        padding: 12px 30px;
-        background: linear-gradient(135deg, #43a047, #2e7d32);
-        color: white;
-        font-weight: bold;
-        text-decoration: none;
-        border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        transition: all 0.3s ease;
-        font-size: 1rem;
-    }
-
-    .home-btn:hover {
-        background: linear-gradient(135deg, #2e7d32, #1b5e20);
-        transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba(0,0,0,0.2);
-    }
-
+    
     @media (max-width: 768px) {
         th, td {
             padding: 12px 8px;
@@ -227,9 +203,5 @@
     </tbody>
 </table>
 
-<!-- Go To Home Button -->
-<div class="home-btn-container">
-    <a href="{% url 'home' %}" class="home-btn">Go To Home</a>
-</div>
 
 {% endblock %}

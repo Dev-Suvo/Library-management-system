@@ -1,10 +1,15 @@
 from django.shortcuts import render , redirect
 from .models import *
 from django.contrib import messages
+from django.contrib.auth import authenticate , login , logout
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
-
+@login_required(login_url="/login/")
 def create(request):
+    print("User:", request.user)
+    print("Is authenticated:", request.user.is_authenticated)
+
     if request.method == "POST":
         data = request.POST
         B_name = data.get('b_name')
@@ -61,17 +66,41 @@ def delete(request, id):
     queryset.delete()
     return redirect('/table/')
 
+def logout_page(request):
+    logout(request)
+    return redirect('/login/')
 
-def login(request):
+
+def login_page(request):
+    if request.method == "POST":
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        if not User.objects.filter(username = username).exists():
+            messages.error(request, 'Invalid Username')
+            return redirect('/login/')
+        
+        user = authenticate(username = username, password = password)
+
+        if user is None:
+            messages.error(request , 'Invalid Password')
+            return redirect('/login/')
+
+        else:
+            login(request, user)
+            return redirect('/')
+
+
+
     return render(request, 'login.html')
 
-def register(request):
+def register_page(request):
     if request.method == "POST":
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
         username = request.POST.get('username')
         email = request.POST.get('email')
-        password1 = request.POST.get('password1')
+        password = request.POST.get('password')
 
 
         user = User.objects.filter(username = username)
@@ -86,7 +115,7 @@ def register(request):
         username = username,
         email = email,
         )
-        user.set_password(password1)
+        user.set_password(password)
         user.save()
         messages.info(request, 'Account Created Successfully')
 
@@ -94,3 +123,4 @@ def register(request):
         return redirect('/register')
 
     return render(request, 'register.html')
+

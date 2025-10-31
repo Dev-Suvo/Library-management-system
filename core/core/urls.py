@@ -32,10 +32,12 @@ urlpatterns = [
     path('update/<id>/', update, name='update' ),
     path('delete/<id>/', delete, name='delete' ),
 
-    path('login/', login, name='login' ),
-    path('register/', register, name='register' ),
-
     
+    path('logout/', logout_page, name='logout' ),
+    path('login/', login_page, name='login' ),
+    path('register/', register_page, name='register' ),
+
+
 
 ]
 

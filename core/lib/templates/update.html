@@ -5,24 +5,30 @@
     body {
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         background: linear-gradient(135deg, #f0f4c3 0%, #c8e6c9 100%);
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Main container for spacing below navbar */
+    .page-wrapper {
+        margin-top: 120px; /* to avoid overlap with fixed navbar */
         display: flex;
         justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        min-height: 100vh;
-        margin: 0;
-        padding: 20px;
+        align-items: flex-start;
+        width: 100%;
+        padding: 40px;
+        box-sizing: border-box;
     }
 
     .form-container {
         background: #ffffff;
-        width: 420px;
-        padding: 35px 30px;
+        width: 100%;
+        max-width: 800px;
+        padding: 40px 50px;
         border-radius: 15px;
         box-shadow: 0 10px 28px rgba(0,0,0,0.15);
         transition: all 0.3s ease;
         border: 1px solid rgba(0,0,0,0.05);
-        margin-bottom: 20px;
     }
 
     .form-container:hover {
@@ -32,7 +38,7 @@
 
     h2 {
         text-align: center;
-        margin-bottom: 30px;
+        margin-bottom: 35px;
         color: #1b5e20;
         letter-spacing: 0.5px;
         text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
@@ -41,7 +47,7 @@
     label {
         font-weight: 600;
         display: block;
-        margin-bottom: 6px;
+        margin-bottom: 8px;
         color: #2e7d32;
     }
 
@@ -50,7 +56,7 @@
     input[type="file"] {
         width: 100%;
         padding: 12px;
-        margin-bottom: 20px;
+        margin-bottom: 25px;
         border: 1px solid #bdbdbd;
         border-radius: 8px;
         font-size: 1rem;
@@ -87,16 +93,35 @@
         box-shadow: 0 6px 16px rgba(0,0,0,0.2);
     }
 
+    .table-link {
+        display: block;
+        text-align: center;
+        margin-top: 20px;
+        padding: 12px 20px;
+        background: linear-gradient(135deg, #a5d6a7, #66bb6a);
+        color: white;
+        font-weight: bold;
+        text-decoration: none;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        transition: all 0.3s ease;
+    }
+
+    .table-link:hover {
+        background: linear-gradient(135deg, #66bb6a, #43a047);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+    }
+
     input::placeholder,
     textarea::placeholder {
         color: #777;
         font-style: italic;
     }
 
-    /* Show current image thumbnail */
     .current-img {
         text-align: center;
-        margin-bottom: 15px;
+        margin-bottom: 20px;
     }
     .current-img img {
         width: 120px;
@@ -107,68 +132,46 @@
     .current-img p {
         font-size: 0.9rem;
         color: #555;
+        margin-top: 8px;
     }
 
-    /* Home button */
-    .home-btn-container {
-        text-align: center;
-        margin-top: 10px;
-    }
+    @media (max-width: 768px) {
+        .page-wrapper {
+            padding: 20px;
+        }
 
-    .home-btn {
-        display: inline-block;
-        padding: 12px 30px;
-        background: linear-gradient(135deg, #43a047, #2e7d32);
-        color: white;
-        font-weight: bold;
-        text-decoration: none;
-        border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        transition: all 0.3s ease;
-        font-size: 1rem;
-    }
-
-    .home-btn:hover {
-        background: linear-gradient(135deg, #2e7d32, #1b5e20);
-        transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba(0,0,0,0.2);
-    }
-
-    @media (max-width: 450px) {
         .form-container {
-            width: 90%;
-            padding: 25px 20px;
+            padding: 30px 25px;
+            width: 100%;
         }
     }
 </style>
 
-<div class="form-container">
-    <h2>Update Book</h2>
-    <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        
-        <label for="name">Book Name</label>
-        <input type="text" id="name" name="b_name" value="{{ book.b_name }}" required>
+<div class="page-wrapper">
+    <div class="form-container">
+        <h2>Update Book</h2>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="name">Book Name</label>
+            <input type="text" id="name" name="b_name" value="{{ book.b_name }}" placeholder="Enter book name" required>
 
-        <label for="description">Book Description</label>
-        <textarea id="description" name="b_des" rows="4" required>{{ book.b_des }}</textarea>
+            <label for="description">Book Description</label>
+            <textarea id="description" name="b_des" rows="4" placeholder="Enter description" required>{{ book.b_des }}</textarea>
 
-        <label for="image">Book Image</label>
-        <input type="file" id="image" name="b_image" accept="image/*">
-        
-        {% if book.b_image %}
-            <div class="current-img">
-                <img src="/media/{{ book.b_image }}" alt="{{ book.b_name }}">
-                <p>Current Image</p>
-            </div>
-        {% endif %}
+            <label for="image">Book Image</label>
+            <input type="file" id="image" name="b_image" accept="image/*">
 
-        <button type="submit">Update</button>
-    </form>
-</div>
+            {% if book.b_image %}
+                <div class="current-img">
+                    <img src="/media/{{ book.b_image }}" alt="{{ book.b_name }}">
+                    <p>Current Image</p>
+                </div>
+            {% endif %}
 
-<div class="home-btn-container">
-    <a href="{% url 'home' %}" class="home-btn">Go To Home</a>
+            <button type="submit">Update</button>
+        </form>
+
+    </div>
 </div>
 
 {% endblock %}

@@ -3,14 +3,116 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>{% block title %}Library Management{% endblock %}</title>
+
+    {% block head %}
+    <style>
+        /* ----- Navbar Styling ----- */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(135deg, #43a047, #2e7d32);
+            color: white;
+            padding: 15px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            flex-wrap: nowrap;
+            overflow: visible; /* ✅ ensures nothing gets cut */
+        }
+
+        .navbar h1 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1rem;
+            transition: 0.3s ease;
+            white-space: nowrap; /* ✅ prevents "Logout" from breaking */
+        }
+
+        .nav-links a:hover {
+            color: #c8e6c9;
+        }
+
+        /* Space for navbar */
+        .content {
+            margin-top: 90px;
+            width: 100%;
+            padding: 10px;
+        }
+
+        /* Responsive Fix */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 15px 20px;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+                width: 100%;
+                margin-top: 10px;
+            }
+
+            .nav-links a {
+                font-size: 1rem;
+            }
+        }
+    </style>
+    {% endblock %}
 </head>
 <body>
 
+    <nav class="navbar">
+        <h1>📚 My Library</h1>
+        <div class="nav-links">
+            {% if user.is_authenticated %}
+                {% if request.path != '/' and request.path != '/login/' and request.path != '/register/' %}
+                    <a href="/">Home</a>
+                {% endif %}
+                <a href="{% url 'showtable' %}">View All Books</a>
+                <a href="{% url 'logout' %}">Logout</a>
+            {% else %}
+                <a href="{% url 'login' %}">Login</a>
+                <a href="{% url 'register' %}">Register</a>
+            {% endif %}
+        </div>
+    </nav>
 
-    {% block start %}
+    <div class="content">
+        {% block start %}
+        {% endblock %}
+    </div>
 
-    {% endblock %}
-    
 </body>
 </html>

@@ -5,17 +5,26 @@
     body {
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         background: linear-gradient(135deg, #f0f4c3 0%, #c8e6c9 100%);
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Main container for spacing below navbar */
+    .page-wrapper {
+        margin-top: 120px; /* to avoid overlap with fixed navbar */
         display: flex;
         justify-content: center;
-        align-items: center;
-        height: 100vh;
-        margin: 0;
+        align-items: flex-start;
+        width: 100%;
+        padding: 40px;
+        box-sizing: border-box;
     }
 
     .form-container {
         background: #ffffff;
-        width: 400px;
-        padding: 35px 30px;
+        width: 100%;
+        max-width: 800px;
+        padding: 40px 50px;
         border-radius: 15px;
         box-shadow: 0 10px 28px rgba(0,0,0,0.15);
         transition: all 0.3s ease;
@@ -29,7 +38,7 @@
 
     h2 {
         text-align: center;
-        margin-bottom: 30px;
+        margin-bottom: 35px;
         color: #1b5e20;
         letter-spacing: 0.5px;
         text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
@@ -38,7 +47,7 @@
     label {
         font-weight: 600;
         display: block;
-        margin-bottom: 6px;
+        margin-bottom: 8px;
         color: #2e7d32;
     }
 
@@ -47,7 +56,7 @@
     input[type="file"] {
         width: 100%;
         padding: 12px;
-        margin-bottom: 20px;
+        margin-bottom: 25px;
         border: 1px solid #bdbdbd;
         border-radius: 8px;
         font-size: 1rem;
@@ -89,7 +98,7 @@
         text-align: center;
         margin-top: 20px;
         padding: 12px 20px;
-        background: linear-gradient(135deg, #a5d6a7, #66bb6a); /* lighter green gradient */
+        background: linear-gradient(135deg, #a5d6a7, #66bb6a);
         color: white;
         font-weight: bold;
         text-decoration: none;
@@ -99,7 +108,7 @@
     }
 
     .table-link:hover {
-        background: linear-gradient(135deg, #66bb6a, #43a047); /* hover slightly darker */
+        background: linear-gradient(135deg, #66bb6a, #43a047);
         transform: translateY(-2px);
         box-shadow: 0 6px 16px rgba(0,0,0,0.2);
     }
@@ -110,31 +119,35 @@
         font-style: italic;
     }
 
-    @media (max-width: 450px) {
+    @media (max-width: 768px) {
+        .page-wrapper {
+            padding: 20px;
+        }
+
         .form-container {
-            width: 90%;
-            padding: 25px 20px;
+            padding: 30px 25px;
+            width: 100%;
         }
     }
 </style>
 
-<div class="form-container">
-    <h2>Add New Book</h2>
-    <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        <label for="name">Book Name</label>
-        <input type="text" id="name" name="b_name" placeholder="Enter book name" required>
+<div class="page-wrapper">
+    <div class="form-container">
+        <h2>Add New Book</h2>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="name">Book Name</label>
+            <input type="text" id="name" name="b_name" placeholder="Enter book name" required>
 
-        <label for="description">Book Description</label>
-        <textarea id="description" name="b_des" rows="4" placeholder="Enter description" required></textarea>
+            <label for="description">Book Description</label>
+            <textarea id="description" name="b_des" rows="4" placeholder="Enter description" required></textarea>
 
-        <label for="image">Book Image</label>
-        <input type="file" id="image" name="b_image" accept="image/*" required>
+            <label for="image">Book Image</label>
+            <input type="file" id="image" name="b_image" accept="image/*" required>
 
-        <button type="submit">Submit</button>
-        
-        <a href="{% url 'showtable' %}" class="table-link">View All Books</a>
-    </form>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
 </div>
 
 {% endblock %}
